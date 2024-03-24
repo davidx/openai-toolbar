@@ -1,4 +1,5 @@
-// Observe changes in the DOM
+
+
 const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
         // Check if mutation added nodes with class 'copy-button'
@@ -6,19 +7,33 @@ const observer = new MutationObserver(mutations => {
         const copyButtonParent = addedNodes.find(node => {
             return node.querySelector && node.querySelector('button.flex.gap-1.items-center');
         });
-        
+
         if (copyButtonParent) {
-            // Create 'Save to File' button
-            const saveButton = document.createElement('button');
-            saveButton.textContent = 'Save to File';
-            saveButton.classList.add('save-button');
-            
+            const saveButton = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            saveButton.setAttribute('width', '24');
+            saveButton.setAttribute('height', '24');
+            saveButton.setAttribute('viewBox', '0 0 24 24');
+            saveButton.classList.add('svg-icon');
+            saveButton.style.fill = 'white'; // Set the fill color
+            saveButton.style.cursor = 'pointer'; // Set the cursor to pointer
+
+            // Create SVG path
+            const svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            svgPath.setAttribute('d', 'M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5');
+            svgPath.setAttribute('d', 'M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z');
+         // Append SVG path to SVG element
+            saveButton.appendChild(svgPath);
+
             // Add click event listener
             saveButton.addEventListener('click', () => {
                 // Get content to save
-                const copyRelatedField = copyButtonParent.previousElementSibling;
-                const content = copyRelatedField ? copyRelatedField.textContent : '';
+                const copyRelatedField = copyButtonParent.parentNode.querySelector('pre');
+                let content = copyRelatedField ? copyRelatedField.textContent : '';
+                let lines = content.split('\n');
+                lines[0] = lines[0].replace(/.*Copy code/, '');
+                let content = lines.join('\n');
 
+                console.log(content);
                 // Save content to file
                 if (content) {
                     const blob = new Blob([content], { type: 'text/plain' });
@@ -38,6 +53,7 @@ const observer = new MutationObserver(mutations => {
         }
     });
 });
+
 
 // Start observing the DOM for mutations
 observer.observe(document.body, { childList: true, subtree: true });
