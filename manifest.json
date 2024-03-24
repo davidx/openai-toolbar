@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "OpenAI Copy Save",
+  "version": "1.0",
+  "description": "A Chrome extension to add a 'Save to File' button in the chat on chat.openai.com.",
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["*://chat.openai.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
+
