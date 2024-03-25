@@ -10,11 +10,11 @@ const observer = new MutationObserver(mutations => {
 
         if (copyButtonParent) {
             const saveButton = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            saveButton.setAttribute('width', '24');
-            saveButton.setAttribute('height', '24');
-            saveButton.setAttribute('viewBox', '0 0 24 24');
+            saveButton.setAttribute('width', '36');
+            saveButton.setAttribute('height', '36');
+            saveButton.setAttribute('viewBox', '0 0 36 36');
             saveButton.classList.add('svg-icon');
-            saveButton.style.fill = 'white'; // Set the fill color
+            saveButton.style.fill = 'grey'; // Set the fill color
             saveButton.style.cursor = 'pointer'; // Set the cursor to pointer
 
             // Create SVG path
@@ -28,8 +28,8 @@ const observer = new MutationObserver(mutations => {
             saveButton.addEventListener('click', () => {
                 // Get content to save
                 const copyRelatedField = copyButtonParent.parentNode.querySelector('pre');
-                let content = copyRelatedField ? copyRelatedField.textContent : '';
-                let lines = content.split('\n');
+                let raw_content = copyRelatedField ? copyRelatedField.textContent : '';
+                let lines = raw_content.split('\n');
                 lines[0] = lines[0].replace(/.*Copy code/, '');
                 let content = lines.join('\n');
 
